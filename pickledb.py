@@ -1,3 +1,20 @@
+# Hypothesis Testing for PickleDB
+# Copyright (C) 2023 Cuiyang (William) Wang
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+
 # Copyright 2019 Harrison Erd
 #
 # Redistribution and use in source and binary forms, with or without 
@@ -99,15 +116,34 @@ class PickleDB(object):
         self.dthread.join()
         return True
 
+    # Previous version of _loaddb() method from the original pickledb.py:
+    #
+    # def _loaddb(self):
+    #     '''Load or reload the json info from the file'''
+    #     try: 
+    #         self.db = json.load(open(self.loco, 'rt'))
+    #     except ValueError:
+    #         if os.stat(self.loco).st_size == 0:  # Error raised because file is empty
+    #             self.db = {}
+    #         else:
+    #             raise  # File is not empty, avoid overwriting it
+    #
+    # The new version uses a context manager to open the file, which is a better
+    # practice than using the open() function directly. The context manager
+    # ensures that the file is closed when the block is exited, even if an
+    # exception is raised.
+    #
+    # Modified by Cuiyang (William) Wang on 2023-12-17
     def _loaddb(self):
         '''Load or reload the json info from the file'''
-        try: 
-            self.db = json.load(open(self.loco, 'rt'))
+        try:
+            with open(self.loco, 'rt') as file:  # Using context manager to open the file
+                self.db = json.load(file)
         except ValueError:
             if os.stat(self.loco).st_size == 0:  # Error raised because file is empty
                 self.db = {}
             else:
-                raise  # File is not empty, avoid overwriting it
+                raise  # File is not empty, re-raise the exception
 
     def _autodumpdb(self):
         '''Write/save the json dump into the file if auto_dump is enabled'''
