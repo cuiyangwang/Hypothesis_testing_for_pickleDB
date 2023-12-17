@@ -4,9 +4,14 @@ This repository contains a Python project for implementing property-based testin
 
 ## Overview
 
-PickleDB is a lightweight and simple key-value store. It is built upon Python's simplejson module and was designed to be fast and straightforward to use. This project aims to use Hypothesis, a powerful property-based testing framework for Python, to rigorously test PickleDB's functionality and uncover edge cases.
+[PickleDB](https://github.com/patx/pickledb) is a lightweight and simple key-value store. It is built upon Python's simplejson module and was designed to be fast and straightforward to use. This project aims to use Hypothesis, a powerful property-based testing framework for Python, to rigorously test PickleDB's functionality and uncover edge cases.
 
 ## Getting Started
+
+### Prerequisites
+
+- Python 3.x
+- pip (Python package installer)
 
 ### Install the required packages
 
